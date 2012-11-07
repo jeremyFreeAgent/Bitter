@@ -15,12 +15,14 @@ Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 Usage
 -----
 Create a Bitter with a Redis client (Predis as example):
+
 .. code-block:: php
 
     $redisClient = new \Predis\Client();
     $bitter = new Bitter();
 
 Mark user 13003 as active and has been kicked by Chuck Norris:
+
 .. code-block:: php
 
     $bitter = markEvent('active', 13003);
@@ -31,6 +33,7 @@ Mark user 13003 as active and has been kicked by Chuck Norris:
     Please don't use huge ids (e.g. 2^32 or bigger) cause this will require large amounts of memory.
 
 Test if user 13003 as been kicked by Chuck Norris this week:
+
 .. code-block:: php
 
     $currentWeek = new \Bitter\Event\Week('kicked_by_chuck_norris');
@@ -42,6 +45,7 @@ Test if user 13003 as been kicked by Chuck Norris this week:
     }
 
 How many users have been active yesterday:
+
 .. code-block:: php
 
     $yesterday = new \Bitter\Event\Day('active', new DateTime('yesterday'));

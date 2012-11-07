@@ -47,9 +47,7 @@ class Bitter
      */
     public function mark($eventName, $id, DateTime $dateTime = null)
     {
-        if (is_null($dateTime)) {
-            $dateTime = new DateTime;
-        }
+        $dateTime = is_null($dateTime) ? new DateTime : $dateTime;
 
         $eventData = array(
             new Month($eventName, $dateTime),

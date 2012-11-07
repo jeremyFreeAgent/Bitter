@@ -11,10 +11,10 @@ abstract class AbstractEvent
     protected $eventName;
     protected $dateTime;
 
-    public function __construct($eventName, DateTime $dateTime)
+    public function __construct($eventName, DateTime $dateTime = null)
     {
         $this->eventName = $eventName;
-        $this->dateTime  = $dateTime;
+        $this->dateTime  = is_null($dateTime) ? new DateTime : $dateTime;
     }
 
     public function getPrefixKey()

@@ -19,7 +19,7 @@ Create a Bitter with a Redis client (Predis as example):
 .. code-block:: php
 
     $redisClient = new \Predis\Client();
-    $bitter = new Bitter();
+    $bitter = new Bitter($redisClient);
 
 Mark user 13003 as active and has been kicked by Chuck Norris:
 

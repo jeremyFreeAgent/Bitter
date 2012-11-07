@@ -16,13 +16,15 @@ Usage
 -----
 Create a Bitter with a Redis client (Predis as example):
 .. code-block:: php
+    <?php
 
     $redisClient = new \Predis\Client();
     $bitter = new Bitter();
 
 Mark user 13003 as active and has been kicked by Chuck Norris:
 .. code-block:: php
-
+    <?php
+    // ...
     $bitter = markEvent('active', 13003);
     $bitter = markEvent('kicked_by_chuck_norris', 13003);
 
@@ -32,7 +34,8 @@ Mark user 13003 as active and has been kicked by Chuck Norris:
 
 Test if user 13003 as been kicked by Chuck Norris this week:
 .. code-block:: php
-
+    <?php
+    //...
     $currentWeek = new \Bitter\Event\Week('kicked_by_chuck_norris');
 
     if ($bitter->contain($currentWeek, 13003) {
@@ -43,7 +46,8 @@ Test if user 13003 as been kicked by Chuck Norris this week:
 
 How many users have been active yesterday:
 .. code-block:: php
-
+    <?php
+    //...
     $yesterday = new \Bitter\Event\Day('active', new DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';

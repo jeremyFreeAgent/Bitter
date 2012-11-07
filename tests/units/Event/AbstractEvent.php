@@ -52,17 +52,4 @@ class AbstractEvent extends atoum\test
             ->isEqualTo('bitter_drink_a_bitter_beer_2012-11-06')
         ;
     }
-
-    public function testGetDateTimeFormated()
-    {
-        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
-
-        $event = new \mock\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
-
-        $this
-            ->exception(function() use ($event) { $event->getDateTimeFormated(); })
-            ->isInstanceOf('\Exception')
-            ->hasMessage("getDateTimeFormated method must be defined.")
-        ;
-    }
 }

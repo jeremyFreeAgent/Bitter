@@ -32,10 +32,10 @@ abstract class AbstractEvent
         return $this->dateTime;
     }
 
-    public function getDateTimeFormated()
-    {
+    abstract public function getDateTimeFormated();
+    /*{
         throw new Exception("getDateTimeFormated method must be defined.");
-    }
+    }*/
 
     public function getKey()
     {

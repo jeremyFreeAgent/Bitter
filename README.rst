@@ -21,34 +21,34 @@ Create a Bitter with a Redis client (Predis as example):
     $redisClient = new \Predis\Client();
     $bitter = new Bitter($redisClient);
 
-Mark user 13003 as active and has been kicked by Chuck Norris:
+Mark user 404 as active and has been kicked by Chuck Norris:
 
 .. code-block:: php
 
-    $bitter = markEvent('active', 13003);
-    $bitter = markEvent('kicked_by_chuck_norris', 13003);
+    $bitter = markEvent('active', 404);
+    $bitter = markEvent('kicked_by_chuck_norris', 404);
 
 .. note::
 
     Please don't use huge ids (e.g. 2^32 or bigger) cause this will require large amounts of memory.
 
-Test if user 13003 as been kicked by Chuck Norris this week:
+Test if user 404 as been kicked by Chuck Norris this week:
 
 .. code-block:: php
 
-    $currentWeek = new \Bitter\Event\Week('kicked_by_chuck_norris');
+    $currentWeek = new Bitter\Event\Week('kicked_by_chuck_norris');
 
-    if ($bitter->contain($currentWeek, 13003) {
-        echo 'User with id 13003 has been kicked by Chuck Norris this week.';
+    if ($bitter->contain($currentWeek, 404) {
+        echo 'User with id 404 has been kicked by Chuck Norris this week.';
     } else {
-        echo 'User with id 13003 has not been kicked by Chuck Norris this week.';
+        echo 'User with id 404 has not been kicked by Chuck Norris this week.';
     }
 
 How many users have been active yesterday:
 
 .. code-block:: php
 
-    $yesterday = new \Bitter\Event\Day('active', new DateTime('yesterday'));
+    $yesterday = new Bitter\Event\Day('active', new DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';
 

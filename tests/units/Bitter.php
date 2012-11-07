@@ -40,29 +40,29 @@ class Bitter extends atoum\test
             ->isIdenticalTo(0)
         ;
         $this
-            ->boolean($bitter->contain($day, 13003))
+            ->boolean($bitter->contain($day, 404))
             ->isFalse()
         ;
 
-        $bitter->mark('drink_a_bitter_beer', 13003, $dateTime);
+        $bitter->mark('drink_a_bitter_beer', 404, $dateTime);
 
         $this
             ->variable($bitter->count($day))
             ->isIdenticalTo(1)
         ;
         $this
-            ->boolean($bitter->contain($day, 13003))
+            ->boolean($bitter->contain($day, 404))
             ->isTrue()
         ;
 
-        $bitter->mark('drink_a_bitter_beer', 13003, $dateTime);
+        $bitter->mark('drink_a_bitter_beer', 404, $dateTime);
 
         $this
             ->variable($bitter->count($day))
             ->isIdenticalTo(1)
         ;
         $this
-            ->boolean($bitter->contain($day, 13003))
+            ->boolean($bitter->contain($day, 404))
             ->isTrue()
         ;
 

@@ -6,8 +6,8 @@ Installation
 ------------
 Use `Composer <https://github.com/composer/composer/>`_ to install : `free-agent/bitter`.
 
-Bitter uses `Redis >=2.6 <http://redis.io>`_.
+Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 
 Thanks
 ------
-This library is a port of bitmapist (Python) by Amir Salihefendic.
+This library is a port of `bitmapist <https://github.com/Doist/bitmapist/>`_ (Python) by `Amir Salihefendic <http://doist.io/>`_.

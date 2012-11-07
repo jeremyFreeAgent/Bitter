@@ -1,0 +1,29 @@
+{
+    "name": "free-agent/bitter",
+    "description": "Powerful analytics library using Redis",
+    "homepage": "http://bitter.free-agent.fr",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jérémy Romey",
+            "email": "jeremy@free-agent.fr"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/jeremyFreeAgent/clutch/issues"
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "predis/predis": "0.8.*",
+        "mageekguy/atoum": "dev-master"
+    },
+    "suggest": {
+        "predis/predis": "0.8.*"
+    },
+    "autoload": {
+        "psr-0": { "Bitter": "src/" }
+    }
+}

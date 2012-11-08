@@ -1,6 +1,6 @@
 Bitter Documentation
 ====================
-Bitter is a simple but powerful real-time highly-scalable analytics library
+Bitter is a simple but powerful analytics library
 
     "Use Bitter and you have time to drink a bitter beer !"
 

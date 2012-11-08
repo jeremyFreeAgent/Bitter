@@ -1,6 +1,6 @@
 {
     "name": "free-agent/bitter",
-    "description": "Powerful analytics library using Redis",
+    "description": "Bitter is a simple but powerful analytics library",
     "homepage": "http://bitter.free-agent.fr",
     "type": "library",
     "license": "MIT",

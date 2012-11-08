@@ -19,14 +19,15 @@ Create a Bitter with a Redis client (Predis as example):
 .. code-block:: php
 
     $redisClient = new \Predis\Client();
-    $bitter = new Bitter($redisClient);
+    $bitter = new \Bitter($redisClient);
 
 Mark user 404 as active and has been kicked by Chuck Norris:
 
 .. code-block:: php
 
-    $bitter = markEvent('active', 404);
-    $bitter = markEvent('kicked_by_chuck_norris', 404);
+    $bitter->mark('active', 404);
+    $bitter->mark('kicked_by_chuck_norris', 404);
+    //$bitter->mark('jacb_bauer_is_so', 404, new \DateTime('yesterday')); // can pass a \DateTime as third argument
 
 .. note::
 
@@ -36,7 +37,7 @@ Test if user 404 as been kicked by Chuck Norris this week:
 
 .. code-block:: php
 
-    $currentWeek = new Bitter\Event\Week('kicked_by_chuck_norris');
+    $currentWeek = new \Bitter\Event\Week('kicked_by_chuck_norris');
 
     if ($bitter->contain($currentWeek, 404) {
         echo 'User with id 404 has been kicked by Chuck Norris this week.';
@@ -48,7 +49,7 @@ How many users have been active yesterday:
 
 .. code-block:: php
 
-    $yesterday = new Bitter\Event\Day('active', new DateTime('yesterday'));
+    $yesterday = new \Bitter\Event\Day('active', new DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';
 

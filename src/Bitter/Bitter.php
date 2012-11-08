@@ -111,7 +111,7 @@ class Bitter
     {
         $key = $key instanceof EventInterface ? $key->getKey() : $key;
 
-        $this->getRedisClient()->bitop('XOR', $destKey, $key);
+        $this->getRedisClient()->bitop('NOT', $destKey, $key);
 
         return $this;
     }

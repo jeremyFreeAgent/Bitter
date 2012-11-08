@@ -75,6 +75,7 @@ How many users that were active yesterday are active today:
 TODO
 ----
 * Better prefix key.
+* Add remove data methods.
 * Better tests.
 
 Thanks

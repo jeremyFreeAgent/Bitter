@@ -224,7 +224,7 @@ class Bitter extends atoum\test
 
         $this
             ->boolean($bitter->bitOpNot('test_e', $twoDaysAgo)->in(13, 'test_e'))
-            ->isFase()
+            ->isFalse()
         ;
     }
 }

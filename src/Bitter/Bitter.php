@@ -64,17 +64,53 @@ class Bitter
     /**
      * Makes it possible to see if an id has been marked
      *
-     * @param  EventInterface $event The event
-     * @param  integer        $id    An unique id
-     * @return boolean               True if the id has been marked
+     * @param  integer $id  An unique id
+     * @param  mixed   $key The key or the event
+     * @return boolean True if the id has been marked
      */
-    public function contain(EventInterface $event, $id)
+    public function in($id, $key)
     {
-        return (bool) $this->getRedisClient()->getbit($event->getKey(), $id);
+        $key = $key instanceof EventInterface ? $key->getKey() : $key;
+
+        return (bool) $this->getRedisClient()->getbit($key, $id);
     }
 
-    public function count(EventInterface $event)
+    public function count($key)
     {
-        return (int) $this->getRedisClient()->bitcount($event->getKey());
+        $key = $key instanceof EventInterface ? $key->getKey() : $key;
+
+        return (int) $this->getRedisClient()->bitcount($key);
+    }
+
+    private function bitOp($op, $destKey, $keyOne, $keyTwo)
+    {
+        $keyOne = $keyOne instanceof EventInterface ? $keyOne->getKey() : $keyOne;
+        $keyTwo = $keyTwo instanceof EventInterface ? $keyTwo->getKey() : $keyTwo;
+
+        $this->getRedisClient()->bitop($op, $destKey, $keyOne, $keyTwo);
+
+        return $this;
+    }
+
+    public function bitOpAnd($destKey, $keyOne, $keyTwo)
+    {
+        return $this->bitOp('AND', $destKey, $keyOne, $keyTwo);
+    }
+
+    public function bitOpOr($destKey, $keyOne, $keyTwo)
+    {
+        return $this->bitOp('OR', $destKey, $keyOne, $keyTwo);
+    }
+
+    public function bitOpXor($destKey, $keyOne, $keyTwo)
+    {
+        return $this->bitOp('XOR', $destKey, $keyOne, $keyTwo);
+    }
+
+    public function bitOpNot($destKey, $key)
+    {
+        $key = $key instanceof EventInterface ? $key->getKey() : $key;
+
+        return $this->getRedisClient()->bitop('XOR', $destKey, $key);
     }
 }

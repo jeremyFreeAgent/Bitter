@@ -40,7 +40,7 @@ class Bitter extends atoum\test
             ->isIdenticalTo(0)
         ;
         $this
-            ->boolean($bitter->contain($day, 404))
+            ->boolean($bitter->in(404, $day))
             ->isFalse()
         ;
 
@@ -51,7 +51,7 @@ class Bitter extends atoum\test
             ->isIdenticalTo(1)
         ;
         $this
-            ->boolean($bitter->contain($day, 404))
+            ->boolean($bitter->in(404, $day))
             ->isTrue()
         ;
 
@@ -62,20 +62,47 @@ class Bitter extends atoum\test
             ->isIdenticalTo(1)
         ;
         $this
-            ->boolean($bitter->contain($day, 404))
+            ->boolean($bitter->in(404, $day))
             ->isTrue()
         ;
 
-        $dateTime = new DateTime();
-        $day = new Day('drink_a_bitter_beer', $dateTime);
+        $redisClient->flushdb();
+
+        $day = new Day('drink_a_bitter_beer', new DateTime());
         $this
-            ->boolean($bitter->contain($day, 13))
+            ->boolean($bitter->in(13, $day))
             ->isFalse()
         ;
         $bitter->mark('drink_a_bitter_beer', 13);
         $this
-            ->boolean($bitter->contain($day, 13))
+            ->boolean($bitter->in(13, $day))
             ->isTrue()
+        ;
+    }
+
+    public function testbitOpAnd()
+    {
+        $redisClient = new \Predis\Client();
+
+        $redisClient->flushdb();
+
+        $bitter = new TestedBitter($redisClient);
+
+        $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $this
+            ->boolean($bitter->bitOpAnd('test', $today, $yesterday)->in(13, 'test'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpAnd('test', $today, $yesterday)->in(404, 'test'))
+            ->isFalse()
         ;
     }
 }

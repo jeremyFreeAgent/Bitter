@@ -12,8 +12,8 @@ Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/
 
 Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 
-Usage
------
+Basic usage
+-----------
 Create a Bitter with a Redis client (Predis as example):
 
 .. code-block:: php
@@ -38,7 +38,7 @@ Test if user 404 as been kicked by Chuck Norris this week:
 
     $currentWeek = new Bitter\Event\Week('kicked_by_chuck_norris');
 
-    if ($bitter->contain($currentWeek, 404) {
+    if ($bitter->in(404, $currentWeek) {
         echo 'User with id 404 has been kicked by Chuck Norris this week.';
     } else {
         echo 'User with id 404 has not been kicked by Chuck Norris this week.';
@@ -51,6 +51,26 @@ How many users have been active yesterday:
     $yesterday = new Bitter\Event\Day('active', new DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';
+
+Using BitOp
+-----------
+How many users that were active yesterday are active today:
+
+.. code-block:: php
+
+    $today     = new Bitter\Event\Day('active', new DateTime());
+    $yesterday = new Bitter\Event\Day('active', new DateTime('yesterday'));
+
+    $count = $bitter->bitOpAnd('bit_op_example', $today, $yesterday)->count('bit_op_example');
+    echo $count . ' were active yesterday are active today.';
+
+.. note::
+    Please look at `Redis BITOP Command <http://redis.io/commands/bitop>`_ for performance considerations.
+
+TODO
+----
+* Better prefix key.
+* Better tests.
 
 Thanks
 ------

@@ -27,7 +27,9 @@ Mark user 404 as active and has been kicked by Chuck Norris:
 
     $bitter->mark('active', 404);
     $bitter->mark('kicked_by_chuck_norris', 404);
-    //$bitter->mark('jacb_bauer_is_so', 404, new \DateTime('yesterday')); // can pass a \DateTime as third argument
+
+    //Can pass a \DateTime as third argument
+    //$bitter->mark('jack_bauer_is_so', 404, new \DateTime('yesterday'));
 
 .. note::
 

@@ -11,7 +11,7 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/jeremyFreeAgent/clutch/issues"
+        "issues": "https://github.com/jeremyFreeAgent/Bitter/issues"
     },
     "require": {
         "php": ">=5.3.3"

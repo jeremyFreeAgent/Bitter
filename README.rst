@@ -1,8 +1,10 @@
 Bitter Documentation
 ====================
-Bitter is a simple but powerful analytics library
 
-.. image:: https://secure.travis-ci.org/jeremyFreeAgent/Bitter.png
+.. image:: https://secure.travis-ci.org/jeremyFreeAgent/Bitter.png?branch=master
+   :target: http://travis-ci.org/jeremyFreeAgent/Bitter
+
+Bitter is a simple but powerful analytics library
 
     "Use Bitter and you have time to drink a bitter beer !"
 

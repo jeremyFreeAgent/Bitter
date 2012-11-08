@@ -29,5 +29,5 @@
     "target-dir": "FreeAgent/Bitter",
     "config": {
         "bin-dir": "bin"
-    },
+    }
 }

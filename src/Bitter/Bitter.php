@@ -9,6 +9,9 @@ use Bitter\Event\Day;
 use Bitter\Event\Hour;
 use Bitter\Event\EventInterface;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Bitter
 {
     private $redisClient;

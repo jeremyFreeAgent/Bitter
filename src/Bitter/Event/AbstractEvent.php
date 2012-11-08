@@ -5,6 +5,9 @@ namespace Bitter\Event;
 use \DateTime;
 use \Exception;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 abstract class AbstractEvent
 {
     protected $prefixKey = 'bitter';

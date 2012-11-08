@@ -8,6 +8,9 @@ use \mageekguy\atoum;
 use \DateTime;
 use Bitter\Event\Week as TestedWeek;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Week extends atoum\test
 {
     public function testConstruct()

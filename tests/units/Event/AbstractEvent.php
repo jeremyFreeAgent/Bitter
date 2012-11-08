@@ -9,6 +9,9 @@ use \DateTime;
 use Bitter\Event\Day;
 use Bitter\Event\AbstractEvent as TestedAbstractEvent;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class AbstractEvent extends atoum\test
 {
     public function testConstruct()

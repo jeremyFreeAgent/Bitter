@@ -2,6 +2,9 @@
 
 namespace Bitter\Event;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Week extends AbstractEvent implements EventInterface
 {
     public function getDateTimeFormated()

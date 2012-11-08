@@ -8,6 +8,9 @@ use \mageekguy\atoum;
 use \DateTime;
 use Bitter\Event\Hour as TestedHour;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Hour extends atoum\test
 {
     public function testConstruct()

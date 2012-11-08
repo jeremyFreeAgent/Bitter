@@ -9,6 +9,9 @@ use \DateTime;
 use Bitter\Bitter as TestedBitter;
 use Bitter\Event\Day;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Bitter extends atoum\test
 {
     private function getRedisClient()

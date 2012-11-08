@@ -8,6 +8,9 @@ use \mageekguy\atoum;
 use \DateTime;
 use Bitter\Event\Month as TestedMonth;
 
+/**
+ * @author Jérémy Romey <jeremy@free-agent.fr>
+ */
 class Month extends atoum\test
 {
     public function testConstruct()

@@ -106,13 +106,4 @@ class Bitter
     {
         return $this->bitOp('XOR', $destKey, $keyOne, $keyTwo);
     }
-
-    public function bitOpNot($destKey, $key)
-    {
-        $key = $key instanceof EventInterface ? $key->getKey() : $key;
-
-        $this->getRedisClient()->bitop('NOT', $destKey, $key);
-
-        return $this;
-    }
 }

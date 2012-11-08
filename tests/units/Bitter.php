@@ -11,9 +11,14 @@ use Bitter\Event\Day;
 
 class Bitter extends atoum\test
 {
+    private function getRedisClient()
+    {
+        return new \Predis\Client();
+    }
+
     public function testConstruct()
     {
-        $redisClient = new \Predis\Client();
+        $redisClient = $this->getRedisClient();
 
         $bitter = new TestedBitter($redisClient);
 
@@ -25,7 +30,7 @@ class Bitter extends atoum\test
 
     public function testMarkEvent()
     {
-        $redisClient = new \Predis\Client();
+        $redisClient = $this->getRedisClient();
 
         $redisClient->flushdb();
 
@@ -55,6 +60,7 @@ class Bitter extends atoum\test
             ->isTrue()
         ;
 
+        // Adding it a second time with the same dateTime !
         $bitter->mark('drink_a_bitter_beer', 404, $dateTime);
 
         $this
@@ -82,7 +88,7 @@ class Bitter extends atoum\test
 
     public function testbitOpAnd()
     {
-        $redisClient = new \Predis\Client();
+        $redisClient = $this->getRedisClient();
 
         $redisClient->flushdb();
 
@@ -96,13 +102,129 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
 
         $this
-            ->boolean($bitter->bitOpAnd('test', $today, $yesterday)->in(13, 'test'))
+            ->variable($bitter->bitOpAnd('test_a', $today, $yesterday))
+            ->isIdenticalTo($bitter)
+        ;
+
+        $this
+            ->boolean($bitter->bitOpAnd('test_b', $today, $yesterday)->in(13, 'test_b'))
             ->isTrue()
         ;
 
         $this
-            ->boolean($bitter->bitOpAnd('test', $today, $yesterday)->in(404, 'test'))
+            ->boolean($bitter->bitOpAnd('test_c', $today, $yesterday)->in(404, 'test_c'))
             ->isFalse()
+        ;
+    }
+
+    public function testbitOpOr()
+    {
+        $redisClient = $this->getRedisClient();
+
+        $redisClient->flushdb();
+
+        $bitter = new TestedBitter($redisClient);
+
+        $twoDaysAgo = new Day('drink_a_bitter_beer', new DateTime('2 days ago'));
+        $yesterday  = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today      = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $this
+            ->variable($bitter->bitOpOr('test_a', $today, $yesterday))
+            ->isIdenticalTo($bitter)
+        ;
+
+        $this
+            ->boolean($bitter->bitOpOr('test_b', $today, $yesterday)->in(13, 'test_b'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpOr('test_c', $today, $twoDaysAgo)->in(13, 'test_c'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpOr('test_d', $today, $twoDaysAgo)->in(404, 'test_d'))
+            ->isFalse()
+        ;
+    }
+
+    public function testbitOpXor()
+    {
+        $redisClient = $this->getRedisClient();
+
+        $redisClient->flushdb();
+
+        $bitter = new TestedBitter($redisClient);
+
+        $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $this
+            ->variable($bitter->bitOpXor('test_a', $today, $yesterday))
+            ->isIdenticalTo($bitter)
+        ;
+
+        $this
+            ->boolean($bitter->bitOpXor('test_b', $today, $yesterday)->in(13, 'test_b'))
+            ->isFalse()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpXor('test_c', $today, $yesterday)->in(404, 'test_c'))
+            ->isTrue()
+        ;
+    }
+
+    public function testbitOpNot()
+    {
+        $redisClient = $this->getRedisClient();
+
+        $redisClient->flushdb();
+
+        $bitter = new TestedBitter($redisClient);
+
+        $twoDaysAgo = new Day('drink_a_bitter_beer', new DateTime('2 days ago'));
+        $yesterday  = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today      = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('2 days ago'));
+
+        $this
+            ->variable($bitter->bitOpNot('test_a', $today))
+            ->isIdenticalTo($bitter)
+        ;
+
+        $this
+            ->boolean($bitter->bitOpNot('test_b', $today)->in(404, 'test_b'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpNot('test_c', $today)->in(404, 'test_c'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpNot('test_d', $twoDaysAgo)->in(13, 'test_d'))
+            ->isTrue()
+        ;
+
+        $this
+            ->boolean($bitter->bitOpNot('test_e', $twoDaysAgo)->in(13, 'test_e'))
+            ->isFase()
         ;
     }
 }

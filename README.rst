@@ -32,12 +32,15 @@ Mark user 404 as active and has been kicked by Chuck Norris:
     $bitter->mark('active', 404);
     $bitter->mark('kicked_by_chuck_norris', 404);
 
-    //Can pass a \DateTime as third argument
-    //$bitter->mark('jack_bauer_is_so', 404, new \DateTime('yesterday'));
-
 .. note::
 
     Please don't use huge ids (e.g. 2^32 or bigger) cause this will require large amounts of memory.
+
+Pass a DateTime as third argument:
+
+.. code-block:: php
+
+    $bitter->mark('damned_by_jack_bauer', 404, new \DateTime('yesterday'));
 
 Test if user 404 as been kicked by Chuck Norris this week:
 
@@ -65,8 +68,8 @@ How many users that were active yesterday are active today:
 
 .. code-block:: php
 
-    $today     = new Bitter\Event\Day('active', new DateTime());
-    $yesterday = new Bitter\Event\Day('active', new DateTime('yesterday'));
+    $today     = new \Bitter\Event\Day('active', new \DateTime());
+    $yesterday = new \Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     $count = $bitter->bitOpAnd('bit_op_example', $today, $yesterday)->count('bit_op_example');
     echo $count . ' were active yesterday are active today.';

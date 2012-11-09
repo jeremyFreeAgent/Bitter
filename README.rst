@@ -74,6 +74,19 @@ How many users that were active yesterday are active today:
     $count = $bitter->bitOpAnd('bit_op_example', $today, $yesterday)->count('bit_op_example');
     echo $count . ' were active yesterday are active today.';
 
+Test if user 13 was active yesterday and is active today:
+
+.. code-block:: php
+
+    $today     = new \Bitter\Event\Day('active', new \DateTime());
+    $yesterday = new \Bitter\Event\Day('active', new \DateTime('yesterday'));
+
+    if ($bitter->bitOpAnd('bit_op_example', $today, $yesterday)->in(13, 'bit_op_example')) {
+        echo 'User 13 was active yesterday and today.';
+    } else {
+        echo 'User 13 was not active yesterday and today.';
+    }
+
 .. note::
     Please look at `Redis BITOP Command <http://redis.io/commands/bitop>`_ for performance considerations.
 

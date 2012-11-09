@@ -77,6 +77,13 @@ How many users that were active yesterday are active today:
 .. note::
     Please look at `Redis BITOP Command <http://redis.io/commands/bitop>`_ for performance considerations.
 
+Unit Tests
+----------
+
+.. code-block:: sh
+
+    bin/atoum -mcn 1 -d tests/units
+
 TODO
 ----
 * Better prefix key.

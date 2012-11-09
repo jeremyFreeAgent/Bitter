@@ -12,4 +12,4 @@ before_script:
   - php composer.phar install --dev
 
 script:
-  - bin/atoum -d tests/units
+  - bin/atoum -mcn 1 -d tests/units

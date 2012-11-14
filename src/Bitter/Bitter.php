@@ -26,7 +26,8 @@ class Bitter
      *
      * @return The Redis client
      */
-    public function getRedisClient() {
+    public function getRedisClient()
+    {
         return $this->redisClient;
     }
 
@@ -35,7 +36,8 @@ class Bitter
      *
      * @param [type] $newredisClient The Redis client
      */
-    public function setRedisClient($redisClient) {
+    public function setRedisClient($redisClient)
+    {
         $this->redisClient = $redisClient;
 
         return $this;
@@ -44,9 +46,9 @@ class Bitter
     /**
      * Marks an event for hours, days, weeks and months
      *
-     * @param  string   $eventName The name of the event, could be "active" or "new_signups"
-     * @param  integer  $id        An unique id, typically user id. The id should not be huge, read Redis documentation why (bitmaps)
-     * @param  DateTime $dateTime  Which date should be used as a reference point, default is now
+     * @param string   $eventName The name of the event, could be "active" or "new_signups"
+     * @param integer  $id        An unique id, typically user id. The id should not be huge, read Redis documentation why (bitmaps)
+     * @param DateTime $dateTime  Which date should be used as a reference point, default is now
      */
     public function mark($eventName, $id, DateTime $dateTime = null)
     {

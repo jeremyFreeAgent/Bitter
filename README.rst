@@ -61,7 +61,7 @@ How many users have been active yesterday:
 
 .. code-block:: php
 
-    $yesterday = new \Bitter\Event\Day('active', new DateTime('yesterday'));
+    $yesterday = new \Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';
 

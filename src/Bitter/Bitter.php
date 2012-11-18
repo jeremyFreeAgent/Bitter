@@ -15,6 +15,8 @@ use Bitter\Event\EventInterface;
 class Bitter
 {
     private $redisClient;
+    private $prefixKey     = 'bitter_';
+    private $prefixTempKey = 'bitter_temp_';
 
     public function __construct($redisClient)
     {
@@ -62,7 +64,7 @@ class Bitter
         );
 
         foreach ($eventData as $event) {
-            $this->getRedisClient()->setbit($event->getKey(), $id, 1);
+            $this->getRedisClient()->setbit($this->prefixKey . $event->getKey(), $id, 1);
         }
     }
 
@@ -75,24 +77,24 @@ class Bitter
      */
     public function in($id, $key)
     {
-        $key = $key instanceof EventInterface ? $key->getKey() : $key;
+        $key = $key instanceof EventInterface ? $this->prefixKey . $key->getKey() : $this->prefixTempKey . $key;
 
         return (bool) $this->getRedisClient()->getbit($key, $id);
     }
 
     public function count($key)
     {
-        $key = $key instanceof EventInterface ? $key->getKey() : $key;
+        $key = $key instanceof EventInterface ? $this->prefixKey . $key->getKey() : $this->prefixTempKey . $key;
 
         return (int) $this->getRedisClient()->bitcount($key);
     }
 
     private function bitOp($op, $destKey, $keyOne, $keyTwo)
     {
-        $keyOne = $keyOne instanceof EventInterface ? $keyOne->getKey() : $keyOne;
-        $keyTwo = $keyTwo instanceof EventInterface ? $keyTwo->getKey() : $keyTwo;
+        $keyOne = $keyOne instanceof EventInterface ? $this->prefixKey . $keyOne->getKey() : $this->prefixTempKey . $keyOne;
+        $keyTwo = $keyTwo instanceof EventInterface ? $this->prefixKey . $keyTwo->getKey() : $this->prefixTempKey . $keyTwo;
 
-        $this->getRedisClient()->bitop($op, $destKey, $keyOne, $keyTwo);
+        $this->getRedisClient()->bitop($op, $this->prefixTempKey . $destKey, $keyOne, $keyTwo);
 
         return $this;
     }

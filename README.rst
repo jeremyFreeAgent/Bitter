@@ -16,6 +16,9 @@ Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/
 
 Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 
+.. note::
+    Every keys created in `Redis` will be prefixed by `bitter_`.
+
 Basic usage
 -----------
 Create a Bitter with a Redis client (Predis as example):
@@ -97,9 +100,8 @@ Unit Tests
 
     bin/atoum -mcn 1 -d tests/units
 
-TODO
+Todo
 ----
-* Better prefix key.
 * Add remove data methods.
 * Better tests.
 

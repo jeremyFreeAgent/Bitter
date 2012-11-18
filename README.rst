@@ -10,6 +10,17 @@ Bitter is a simple but powerful analytics library
 
 -- **Jérémy Romey**
 
+Bitter can answer following questions:
+
+* Has user X been online today? This week? This month?
+* Has user X performed action "Y"?
+* How many users have been active have this month? This hour?
+* How many unique users have performed action "Y" this week?
+* How many % of users that were active last week are still active?
+* How many % of users that were active last month are still active this month?
+
+Bitter is very easy to use and enables you to create your own reports easily.
+
 Installation
 ------------
 Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter`.

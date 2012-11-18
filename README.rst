@@ -102,8 +102,7 @@ Unit Tests
 
 Todo
 ----
-* Add remove data methods.
-* Better tests.
+* Implements the `Redis BITOP NOT Command <http://redis.io/commands/bitop>`_.
 
 Thanks
 ------

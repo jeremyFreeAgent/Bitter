@@ -11,6 +11,5 @@ interface EventInterface
     public function getEventName();
     public function getDateTime();
     public function getDateTimeFormated();
-    public function getPrefixKey();
     public function getKey();
 }

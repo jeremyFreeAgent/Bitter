@@ -30,18 +30,6 @@ class AbstractEvent extends atoum\test
         ;
     }
 
-    public function testGetPrefixKey()
-    {
-        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
-
-        $event = new \mock\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
-
-        $this
-            ->string($event->getPrefixKey())
-            ->isEqualTo('bitter')
-        ;
-    }
-
     public function testGetKey()
     {
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
@@ -52,7 +40,7 @@ class AbstractEvent extends atoum\test
 
         $this
             ->string($event->getKey())
-            ->isEqualTo('bitter_drink_a_bitter_beer_2012-11-06')
+            ->isEqualTo('drink_a_bitter_beer_2012-11-06')
         ;
     }
 }

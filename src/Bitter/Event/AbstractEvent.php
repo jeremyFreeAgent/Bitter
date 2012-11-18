@@ -10,7 +10,6 @@ use \Exception;
  */
 abstract class AbstractEvent
 {
-    protected $prefixKey = 'bitter';
     protected $eventName;
     protected $dateTime;
 
@@ -18,11 +17,6 @@ abstract class AbstractEvent
     {
         $this->eventName = $eventName;
         $this->dateTime  = is_null($dateTime) ? new DateTime : $dateTime;
-    }
-
-    public function getPrefixKey()
-    {
-        return $this->prefixKey;
     }
 
     public function getEventName()
@@ -36,12 +30,9 @@ abstract class AbstractEvent
     }
 
     abstract public function getDateTimeFormated();
-    /*{
-        throw new Exception("getDateTimeFormated method must be defined.");
-    }*/
 
     public function getKey()
     {
-        return sprintf('%s_%s_%s', $this->getPrefixKey(), $this->getEventName(), $this->getDateTimeFormated());
+        return sprintf('%s_%s', $this->getEventName(), $this->getDateTimeFormated());
     }
 }

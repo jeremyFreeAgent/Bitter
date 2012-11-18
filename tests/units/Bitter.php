@@ -19,11 +19,30 @@ class Bitter extends atoum\test
         return new \Predis\Client();
     }
 
+    private function getPrefixKey()
+    {
+        return 'test_bitter_';
+    }
+
+    private function getPrefixTempKey()
+    {
+        return 'test_bitter_temp_';
+    }
+
+    private function removeAll()
+    {
+        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->getPrefixKey() . '*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $this->getRedisClient()->del($keys);
+        }
+    }
+
     public function testConstruct()
     {
         $redisClient = $this->getRedisClient();
 
-        $bitter = new TestedBitter($redisClient);
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
         $this
             ->variable($bitter->getRedisClient())
@@ -35,9 +54,9 @@ class Bitter extends atoum\test
     {
         $redisClient = $this->getRedisClient();
 
-        $redisClient->flushdb();
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $bitter = new TestedBitter($redisClient);
+        $this->removeAll();
 
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
 
@@ -75,7 +94,7 @@ class Bitter extends atoum\test
             ->isTrue()
         ;
 
-        $redisClient->flushdb();
+        $this->removeAll();
 
         $day = new Day('drink_a_bitter_beer', new DateTime());
         $this
@@ -87,15 +106,17 @@ class Bitter extends atoum\test
             ->boolean($bitter->in(13, $day))
             ->isTrue()
         ;
+
+        $this->removeAll();
     }
 
     public function testbitOpAnd()
     {
         $redisClient = $this->getRedisClient();
 
-        $redisClient->flushdb();
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $bitter = new TestedBitter($redisClient);
+        $this->removeAll();
 
         $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
         $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
@@ -118,15 +139,17 @@ class Bitter extends atoum\test
             ->boolean($bitter->bitOpAnd('test_c', $today, $yesterday)->in(404, 'test_c'))
             ->isFalse()
         ;
+
+        $this->removeAll();
     }
 
     public function testbitOpOr()
     {
         $redisClient = $this->getRedisClient();
 
-        $redisClient->flushdb();
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $bitter = new TestedBitter($redisClient);
+        $this->removeAll();
 
         $twoDaysAgo = new Day('drink_a_bitter_beer', new DateTime('2 days ago'));
         $yesterday  = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
@@ -155,15 +178,17 @@ class Bitter extends atoum\test
             ->boolean($bitter->bitOpOr('test_d', $today, $twoDaysAgo)->in(404, 'test_d'))
             ->isFalse()
         ;
+
+        $this->removeAll();
     }
 
     public function testbitOpXor()
     {
         $redisClient = $this->getRedisClient();
 
-        $redisClient->flushdb();
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $bitter = new TestedBitter($redisClient);
+        $this->removeAll();
 
         $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
         $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
@@ -186,5 +211,97 @@ class Bitter extends atoum\test
             ->boolean($bitter->bitOpXor('test_c', $today, $yesterday)->in(404, 'test_c'))
             ->isTrue()
         ;
+
+        $this->removeAll();
+    }
+
+    public function testRemoveAll()
+    {
+        $redisClient = $this->getRedisClient();
+
+        $keys_chunk = array_chunk($redisClient->keys('test_bitter_*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $redisClient->del($keys);
+        }
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isEmpty()
+        ;
+
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isNotEmpty()
+        ;
+
+        $bitter->removeAll();
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isEmpty()
+        ;
+
+        $this->removeAll();
+    }
+
+    public function testRemoveTemp()
+    {
+        $redisClient = $this->getRedisClient();
+
+        $keys_chunk = array_chunk($redisClient->keys('test_bitter_*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $redisClient->del($keys);
+        }
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isEmpty()
+        ;
+
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
+        $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
+
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $bitter->bitOpOr('test_b', $today, $yesterday);
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isNotEmpty()
+        ;
+
+        $this
+            ->array($redisClient->keys('test_bitter_temp_*'))
+            ->isNotEmpty()
+        ;
+
+        $bitter->removeTemp();
+
+        $this
+            ->array($redisClient->keys('test_bitter_temp_*'))
+            ->isEmpty()
+        ;
+
+        $this
+            ->array($redisClient->keys('test_bitter_*'))
+            ->isNotEmpty()
+        ;
+
+        $this->removeAll();
     }
 }

@@ -15,12 +15,14 @@ use Bitter\Event\EventInterface;
 class Bitter
 {
     private $redisClient;
-    private $prefixKey     = 'bitter_';
-    private $prefixTempKey = 'bitter_temp_';
+    private $prefixKey;
+    private $prefixTempKey;
 
-    public function __construct($redisClient)
+    public function __construct($redisClient, $prefixKey = 'bitter_', $prefixTempKey = 'bitter_temp_')
     {
         $this->setRedisClient($redisClient);
+        $this->prefixKey     = $prefixKey;
+        $this->prefixTempKey = $prefixTempKey;
     }
 
     /**
@@ -112,5 +114,23 @@ class Bitter
     public function bitOpXor($destKey, $keyOne, $keyTwo)
     {
         return $this->bitOp('XOR', $destKey, $keyOne, $keyTwo);
+    }
+
+    public function removeAll()
+    {
+        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->prefixKey . '*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $this->getRedisClient()->del($keys);
+        }
+    }
+
+    public function removeTemp()
+    {
+        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->prefixTempKey . '*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $this->getRedisClient()->del($keys);
+        }
     }
 }

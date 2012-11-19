@@ -2,7 +2,7 @@
     "name": "free-agent/bitter",
     "description": "Bitter is a simple but powerful analytics library",
     "keywords": ["bitter", "analytics", "redis"],
-    "homepage": "http://bitter.free-agent.fr",
+    "homepage": "https://github.com/jeremyFreeAgent/Bitter",
     "type": "library",
     "license": "MIT",
     "authors": [

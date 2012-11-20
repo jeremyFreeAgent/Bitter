@@ -17,12 +17,14 @@ class Bitter
     private $redisClient;
     private $prefixKey;
     private $prefixTempKey;
+    private $expireTimeout;
 
-    public function __construct($redisClient, $prefixKey = 'bitter:', $prefixTempKey = 'bitter_temp:')
+    public function __construct($redisClient, $prefixKey = 'bitter:', $prefixTempKey = 'bitter_temp:', $expireTimeout = 60)
     {
         $this->setRedisClient($redisClient);
         $this->prefixKey     = $prefixKey;
         $this->prefixTempKey = $prefixTempKey;
+        $this->expireTimeout = $expireTimeout;
     }
 
     /**
@@ -100,6 +102,7 @@ class Bitter
 
         $this->getRedisClient()->bitop($op, $this->prefixTempKey . $destKey, $keyOne, $keyTwo);
         $this->getRedisClient()->sadd($this->prefixTempKey . 'keys', $destKey);
+        $this->getRedisClient()->expire($destKey, $this->expireTimeout);
 
         return $this;
     }

@@ -305,6 +305,28 @@ class Bitter extends atoum\test
             ->isNotEmpty()
         ;
 
+        // Expire timeout
+        $this->removeAll();
+
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey(), 2);
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
+        $bitter->mark('drink_a_bitter_beer', 13, new DateTime('yesterday'));
+        $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
+
+        $bitter->bitOpOr('test_b', $today, $yesterday);
+
+        $this
+            ->array($redisClient->keys($this->getPrefixTempKey() . '*'))
+            ->isNotEmpty()
+        ;
+
+        sleep(3);
+
+        $this
+            ->array($redisClient->keys($this->getPrefixTempKey() . '*'))
+            ->strictlyContains($this->getPrefixTempKey() . 'keys')
+        ;
+
         $this->removeAll();
     }
 }

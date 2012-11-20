@@ -88,6 +88,9 @@ How many users that were active yesterday are active today:
     $count = $bitter->bitOpAnd('bit_op_example', $today, $yesterday)->count('bit_op_example');
     echo $count . ' were active yesterday are active today.';
 
+.. note::
+    The `bit_op_example` key will expire after 60 seconds.
+
 Test if user 13 was active yesterday and is active today:
 
 .. code-block:: php

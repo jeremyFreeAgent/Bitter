@@ -21,17 +21,23 @@ class Bitter extends atoum\test
 
     private function getPrefixKey()
     {
-        return 'test_bitter_';
+        return 'test_bitter:';
     }
 
     private function getPrefixTempKey()
     {
-        return 'test_bitter_temp_';
+        return 'test_bitter_temp:';
     }
 
     private function removeAll()
     {
         $keys_chunk = array_chunk($this->getRedisClient()->keys($this->getPrefixKey() . '*'), 100);
+
+        foreach ($keys_chunk as $keys) {
+            $this->getRedisClient()->del($keys);
+        }
+
+        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->getPrefixTempKey() . '*'), 100);
 
         foreach ($keys_chunk as $keys) {
             $this->getRedisClient()->del($keys);
@@ -219,14 +225,10 @@ class Bitter extends atoum\test
     {
         $redisClient = $this->getRedisClient();
 
-        $keys_chunk = array_chunk($redisClient->keys('test_bitter_*'), 100);
-
-        foreach ($keys_chunk as $keys) {
-            $redisClient->del($keys);
-        }
+        $this->removeAll();
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
             ->isEmpty()
         ;
 
@@ -240,16 +242,17 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
             ->isNotEmpty()
         ;
 
         $bitter->removeAll();
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
-            ->isEmpty()
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
+            ->strictlyContains($this->getPrefixKey() . 'keys')
         ;
+
 
         $this->removeAll();
     }
@@ -258,14 +261,14 @@ class Bitter extends atoum\test
     {
         $redisClient = $this->getRedisClient();
 
-        $keys_chunk = array_chunk($redisClient->keys('test_bitter_*'), 100);
+        $keys_chunk = array_chunk($redisClient->keys($this->getPrefixKey() . '*'), 100);
 
         foreach ($keys_chunk as $keys) {
             $redisClient->del($keys);
         }
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
             ->isEmpty()
         ;
 
@@ -281,24 +284,24 @@ class Bitter extends atoum\test
         $bitter->bitOpOr('test_b', $today, $yesterday);
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
             ->isNotEmpty()
         ;
 
         $this
-            ->array($redisClient->keys('test_bitter_temp_*'))
+            ->array($redisClient->keys($this->getPrefixTempKey() . '*'))
             ->isNotEmpty()
         ;
 
         $bitter->removeTemp();
 
         $this
-            ->array($redisClient->keys('test_bitter_temp_*'))
-            ->isEmpty()
+            ->array($redisClient->keys($this->getPrefixTempKey() . '*'))
+            ->strictlyContains($this->getPrefixTempKey() . 'keys')
         ;
 
         $this
-            ->array($redisClient->keys('test_bitter_*'))
+            ->array($redisClient->keys($this->getPrefixKey() . '*'))
             ->isNotEmpty()
         ;
 

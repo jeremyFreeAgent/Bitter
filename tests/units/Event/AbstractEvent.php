@@ -40,7 +40,7 @@ class AbstractEvent extends atoum\test
 
         $this
             ->string($event->getKey())
-            ->isEqualTo('drink_a_bitter_beer_2012-11-06')
+            ->isEqualTo('drink_a_bitter_beer:2012-11-06')
         ;
     }
 }

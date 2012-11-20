@@ -33,6 +33,6 @@ abstract class AbstractEvent
 
     public function getKey()
     {
-        return sprintf('%s_%s', $this->getEventName(), $this->getDateTimeFormated());
+        return sprintf('%s:%s', $this->getEventName(), $this->getDateTimeFormated());
     }
 }

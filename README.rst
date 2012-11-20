@@ -23,12 +23,12 @@ Bitter is very easy to use and enables you to create your own reports easily.
 
 Installation
 ------------
-Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter`.
+Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter:`.
 
 Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 
 .. note::
-    Every keys created in `Redis` will be prefixed by `bitter_`.
+    Every keys created in `Redis` will be prefixed by `bitter:` ; temp keys by `bitter_temp`.
 
 Basic usage
 -----------

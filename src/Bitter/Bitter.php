@@ -18,7 +18,7 @@ class Bitter
     private $prefixKey;
     private $prefixTempKey;
 
-    public function __construct($redisClient, $prefixKey = 'bitter_', $prefixTempKey = 'bitter_temp_')
+    public function __construct($redisClient, $prefixKey = 'bitter:', $prefixTempKey = 'bitter_temp:')
     {
         $this->setRedisClient($redisClient);
         $this->prefixKey     = $prefixKey;
@@ -66,7 +66,9 @@ class Bitter
         );
 
         foreach ($eventData as $event) {
-            $this->getRedisClient()->setbit($this->prefixKey . $event->getKey(), $id, 1);
+            $key = $this->prefixKey . $event->getKey();
+            $this->getRedisClient()->setbit($key, $id, 1);
+            $this->getRedisClient()->sadd($this->prefixKey . 'keys', $key);
         }
     }
 
@@ -97,6 +99,7 @@ class Bitter
         $keyTwo = $keyTwo instanceof EventInterface ? $this->prefixKey . $keyTwo->getKey() : $this->prefixTempKey . $keyTwo;
 
         $this->getRedisClient()->bitop($op, $this->prefixTempKey . $destKey, $keyOne, $keyTwo);
+        $this->getRedisClient()->sadd($this->prefixTempKey . 'keys', $destKey);
 
         return $this;
     }
@@ -118,7 +121,7 @@ class Bitter
 
     public function removeAll()
     {
-        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->prefixKey . '*'), 100);
+        $keys_chunk = array_chunk($this->getRedisClient()->smembers($this->prefixKey . 'keys'), 100);
 
         foreach ($keys_chunk as $keys) {
             $this->getRedisClient()->del($keys);
@@ -127,7 +130,7 @@ class Bitter
 
     public function removeTemp()
     {
-        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->prefixTempKey . '*'), 100);
+        $keys_chunk = array_chunk($this->getRedisClient()->smembers($this->prefixTempKey . 'keys'), 100);
 
         foreach ($keys_chunk as $keys) {
             $this->getRedisClient()->del($keys);

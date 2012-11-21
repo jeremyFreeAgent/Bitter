@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "predis/predis": "0.8.*",
-        "mageekguy/atoum": "dev-master"
+        "atoum/atoum": "dev-master"
     },
     "suggest": {
         "predis/predis": "0.8.*"

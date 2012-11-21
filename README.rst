@@ -21,6 +21,8 @@ Bitter can answer following questions:
 
 Bitter is very easy to use and enables you to create your own reports easily.
 
+Please see `Bitter <http://bitter.free-agent.fr/>`_  for more info and documentation about this project.
+
 Installation
 ------------
 Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter:`.
@@ -28,7 +30,7 @@ Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/
 Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 
 .. note::
-    Every keys created in `Redis` will be prefixed by `bitter:` ; temp keys by `bitter_temp`.
+    Every keys created in `Redis` will be prefixed by `bitter:` ; temp keys by `bitter_temp:`.
 
 Basic usage
 -----------
@@ -85,7 +87,10 @@ How many users that were active yesterday are active today:
     $today     = new \Bitter\Event\Day('active', new \DateTime());
     $yesterday = new \Bitter\Event\Day('active', new \DateTime('yesterday'));
 
-    $count = $bitter->bitOpAnd('bit_op_example', $today, $yesterday)->count('bit_op_example');
+    $count = $bitter
+        ->bitOpAnd('bit_op_example', $today, $yesterday)
+        ->count('bit_op_example')
+    ;
     echo $count . ' were active yesterday are active today.';
 
 .. note::
@@ -98,7 +103,11 @@ Test if user 13 was active yesterday and is active today:
     $today     = new \Bitter\Event\Day('active', new \DateTime());
     $yesterday = new \Bitter\Event\Day('active', new \DateTime('yesterday'));
 
-    if ($bitter->bitOpAnd('bit_op_example', $today, $yesterday)->in(13, 'bit_op_example')) {
+    $active = $bitter
+        ->bitOpAnd('bit_op_example', $today, $yesterday)
+        ->in(13, 'bit_op_example')
+    ;
+    if ($active) {
         echo 'User 13 was active yesterday and today.';
     } else {
         echo 'User 13 was not active yesterday and today.';

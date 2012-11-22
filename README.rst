@@ -21,11 +21,21 @@ Bitter can answer following questions:
 
 Bitter is very easy to use and enables you to create your own reports easily.
 
-Please see `Bitter <http://bitter.free-agent.fr/>`_  for more info and documentation about this project.
+.. note::
+    Please look `Bitter<http://bitter.free-agent.fr/>`_ website for more info and documentation about this project.
 
 Installation
 ------------
-Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter:`.
+Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter`.
+
+In your `composer.json` you should have:
+.. code-block:: yaml
+
+    {
+        "require": {
+            "free-agent-bitter": "*"
+        }
+    }
 
 Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
 

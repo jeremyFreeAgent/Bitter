@@ -22,13 +22,14 @@ Bitter can answer following questions:
 Bitter is very easy to use and enables you to create your own reports easily.
 
 .. note::
-    Please look `Bitter<http://bitter.free-agent.fr/>`_ website for more info and documentation about this project.
+    Please look `Bitter<http://bitter.free-agent.fr/>`_  website for more info and documentation about this project.
 
 Installation
 ------------
 Use `Composer <https://github.com/composer/composer/>`_ to install: `free-agent/bitter`.
 
 In your `composer.json` you should have:
+
 .. code-block:: yaml
 
     {

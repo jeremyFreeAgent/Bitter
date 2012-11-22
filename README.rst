@@ -22,7 +22,7 @@ Bitter can answer following questions:
 Bitter is very easy to use and enables you to create your own reports easily.
 
 .. note::
-    Please look `Bitter<http://bitter.free-agent.fr/>`_  website for more info and documentation about this project.
+    Please look `Bitter <http://bitter.free-agent.fr/>`_ website for more info and documentation about this project.
 
 Installation
 ------------
@@ -129,6 +129,8 @@ Test if user 13 was active yesterday and is active today:
 
 Unit Tests
 ----------
+
+You can run tests with:
 
 .. code-block:: sh
 

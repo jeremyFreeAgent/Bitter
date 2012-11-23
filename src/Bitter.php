@@ -1,13 +1,13 @@
 <?php
 
-namespace Bitter;
+namespace FreeAgent\Bitter;
 
 use \DateTime;
-use Bitter\Event\Month;
-use Bitter\Event\Week;
-use Bitter\Event\Day;
-use Bitter\Event\Hour;
-use Bitter\Event\EventInterface;
+use FreeAgent\Bitter\Event\Month;
+use FreeAgent\Bitter\Event\Week;
+use FreeAgent\Bitter\Event\Day;
+use FreeAgent\Bitter\Event\Hour;
+use FreeAgent\Bitter\Event\EventInterface;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>

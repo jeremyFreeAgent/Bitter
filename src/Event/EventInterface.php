@@ -1,6 +1,6 @@
 <?php
 
-namespace Bitter\Event;
+namespace FreeAgent\Bitter\Event;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>

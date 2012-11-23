@@ -1,12 +1,12 @@
 <?php
 
-namespace Bitter\tests\units\Event;
+namespace FreeAgent\Bitter\tests\units\Event;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use \mageekguy\atoum;
 use \DateTime;
-use Bitter\Event\Hour as TestedHour;
+use FreeAgent\Bitter\Event\Hour as TestedHour;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>
@@ -19,8 +19,8 @@ class Hour extends atoum\test
 
         $this
             ->object($hour)
-            ->isInstanceOf('Bitter\Event\AbstractEvent')
-            ->isInstanceOf('Bitter\Event\EventInterface')
+            ->isInstanceOf('FreeAgent\Bitter\Event\AbstractEvent')
+            ->isInstanceOf('FreeAgent\Bitter\Event\EventInterface')
         ;
     }
 

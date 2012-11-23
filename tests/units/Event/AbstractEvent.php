@@ -1,13 +1,12 @@
 <?php
 
-namespace Bitter\tests\units\Event;
+namespace FreeAgent\Bitter\tests\units\Event;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use \mageekguy\atoum;
 use \DateTime;
-use Bitter\Event\Day;
-use Bitter\Event\AbstractEvent as TestedAbstractEvent;
+use FreeAgent\Bitter\Event\AbstractEvent as TestedAbstractEvent;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>
@@ -18,7 +17,7 @@ class AbstractEvent extends atoum\test
     {
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
 
-        $event = new \mock\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
+        $event = new \mock\FreeAgent\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
 
         $this
             ->variable($event->getDateTime())
@@ -34,7 +33,7 @@ class AbstractEvent extends atoum\test
     {
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
 
-        $event = new \mock\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
+        $event = new \mock\FreeAgent\Bitter\Event\AbstractEvent('drink_a_bitter_beer', $dateTime);
 
         $event->getMockController()->getDateTimeFormated = '2012-11-06';
 

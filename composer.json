@@ -25,8 +25,12 @@
         "predis/predis": "0.8.*"
     },
     "autoload": {
-        "psr-0": { "Bitter": "src/" }
+        "psr-0": {
+            "FreeAgent\\Bitter": "src/"
+        },
+        "classmap": ["src/"]
     },
+    "target-dir": "FreeAgent/Bitter",
     "config": {
         "bin-dir": "bin"
     }

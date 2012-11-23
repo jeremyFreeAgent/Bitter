@@ -1,13 +1,13 @@
 <?php
 
-namespace Bitter\tests\units;
+namespace FreeAgent\Bitter\tests\units;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use \mageekguy\atoum;
 use \DateTime;
-use Bitter\Bitter as TestedBitter;
-use Bitter\Event\Day;
+use FreeAgent\Bitter\Bitter as TestedBitter;
+use FreeAgent\Bitter\Event\Day;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>

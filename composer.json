@@ -27,7 +27,6 @@
     "autoload": {
         "psr-0": { "Bitter": "src/" }
     },
-    "target-dir": "FreeAgent/Bitter",
     "config": {
         "bin-dir": "bin"
     }

@@ -34,7 +34,7 @@ In your `composer.json` you should have:
 
     {
         "require": {
-            "free-agent-bitter": "*"
+            "free-agent/bitter": "*"
         }
     }
 

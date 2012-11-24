@@ -27,8 +27,7 @@
     "autoload": {
         "psr-0": {
             "FreeAgent\\Bitter": "src/"
-        },
-        "classmap": ["src/"]
+        }
     },
     "config": {
         "bin-dir": "bin"

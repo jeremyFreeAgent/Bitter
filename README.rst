@@ -50,7 +50,7 @@ Create a Bitter with a Redis client (Predis as example):
 .. code-block:: php
 
     $redisClient = new \Predis\Client();
-    $bitter = new FreeAgent\Bitter($redisClient);
+    $bitter = new \FreeAgent\Bitter\Bitter($redisClient);
 
 Mark user 404 as active and has been kicked by Chuck Norris:
 
@@ -85,7 +85,7 @@ How many users have been active yesterday:
 
 .. code-block:: php
 
-    $yesterday = new FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     echo 'Yesterday: ' . $bitter->count($yesterday) . ' users has been active.';
 
@@ -95,8 +95,8 @@ How many users that were active yesterday are active today:
 
 .. code-block:: php
 
-    $today     = new FreeAgent\Bitter\Event\Day('active', new \DateTime());
-    $yesterday = new FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $today     = new \FreeAgent\Bitter\Event\Day('active', new \DateTime());
+    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     $count = $bitter
         ->bitOpAnd('bit_op_example', $today, $yesterday)
@@ -111,8 +111,8 @@ Test if user 13 was active yesterday and is active today:
 
 .. code-block:: php
 
-    $today     = new FreeAgent\Bitter\Event\Day('active', new \DateTime());
-    $yesterday = new FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $today     = new \FreeAgent\Bitter\Event\Day('active', new \DateTime());
+    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     $active = $bitter
         ->bitOpAnd('bit_op_example', $today, $yesterday)

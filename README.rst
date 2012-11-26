@@ -38,7 +38,9 @@ In your `composer.json` you should have:
         }
     }
 
-Bitter uses `Redis <http://redis.io>`_ (version >=2.6).
+Requirements
+~~~~~~~~~~~~
+Bitter uses `Redis <http://redis.io>`_  with version **>=2.6**.
 
 .. note::
     Every keys created in `Redis` will be prefixed by `bitter:` ; temp keys by `bitter_temp:`.

@@ -51,7 +51,7 @@ class Bitter extends atoum\test
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
         $this
-            ->variable($bitter->getRedisClient())
+            ->object($bitter->getRedisClient())
             ->isIdenticalTo($redisClient)
         ;
     }
@@ -77,7 +77,10 @@ class Bitter extends atoum\test
             ->isFalse()
         ;
 
-        $bitter->mark('drink_a_bitter_beer', 404, $dateTime);
+        $this
+            ->object($bitter->mark('drink_a_bitter_beer', 404, $dateTime))
+            ->isIdenticalTo($bitter)
+        ;
 
         $this
             ->variable($bitter->count($day))
@@ -132,7 +135,7 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
 
         $this
-            ->variable($bitter->bitOpAnd('test_a', $today, $yesterday))
+            ->object($bitter->bitOpAnd('test_a', $today, $yesterday))
             ->isIdenticalTo($bitter)
         ;
 
@@ -166,7 +169,7 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
 
         $this
-            ->variable($bitter->bitOpOr('test_a', $today, $yesterday))
+            ->object($bitter->bitOpOr('test_a', $today, $yesterday))
             ->isIdenticalTo($bitter)
         ;
 
@@ -204,7 +207,7 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, new DateTime('yesterday'));
 
         $this
-            ->variable($bitter->bitOpXor('test_a', $today, $yesterday))
+            ->object($bitter->bitOpXor('test_a', $today, $yesterday))
             ->isIdenticalTo($bitter)
         ;
 
@@ -246,7 +249,10 @@ class Bitter extends atoum\test
             ->isNotEmpty()
         ;
 
-        $bitter->removeAll();
+        $this
+            ->object($bitter->removeAll())
+            ->isIdenticalTo($bitter)
+        ;
 
         $this
             ->array($redisClient->keys($this->getPrefixKey() . '*'))
@@ -293,7 +299,10 @@ class Bitter extends atoum\test
             ->isNotEmpty()
         ;
 
-        $bitter->removeTemp();
+        $this
+            ->variable($bitter->removeTemp())
+            ->isIdenticalTo($bitter)
+        ;
 
         $this
             ->array($redisClient->keys($this->getPrefixTempKey() . '*'))

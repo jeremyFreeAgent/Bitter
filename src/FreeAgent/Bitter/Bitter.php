@@ -72,6 +72,8 @@ class Bitter
             $this->getRedisClient()->setbit($key, $id, 1);
             $this->getRedisClient()->sadd($this->prefixKey . 'keys', $key);
         }
+ 
+        return $this;
     }
 
     /**
@@ -129,6 +131,8 @@ class Bitter
         foreach ($keys_chunk as $keys) {
             $this->getRedisClient()->del($keys);
         }
+
+        return $this;
     }
 
     public function removeTemp()
@@ -138,5 +142,7 @@ class Bitter
         foreach ($keys_chunk as $keys) {
             $this->getRedisClient()->del($keys);
         }
+
+        return $this;
     }
 }

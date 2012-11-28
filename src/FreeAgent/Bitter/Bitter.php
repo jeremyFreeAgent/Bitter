@@ -90,6 +90,12 @@ class Bitter
         return (bool) $this->getRedisClient()->getbit($key, $id);
     }
 
+    /**
+     * Counts the number of marks
+     *
+     * @param  mixed   $key The key or the event
+     * @return integer The value of the count result
+     */ 
     public function count($key)
     {
         $key = $key instanceof EventInterface ? $this->prefixKey . $key->getKey() : $this->prefixTempKey . $key;
@@ -124,6 +130,9 @@ class Bitter
         return $this->bitOp('XOR', $destKey, $keyOne, $keyTwo);
     }
 
+    /**
+     * Removes all Bitter keys
+     */
     public function removeAll()
     {
         $keys_chunk = array_chunk($this->getRedisClient()->smembers($this->prefixKey . 'keys'), 100);
@@ -135,6 +144,9 @@ class Bitter
         return $this;
     }
 
+    /**
+     * Removes all Bitter temp keys
+     */
     public function removeTemp()
     {
         $keys_chunk = array_chunk($this->getRedisClient()->smembers($this->prefixTempKey . 'keys'), 100);

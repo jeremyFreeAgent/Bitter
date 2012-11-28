@@ -130,7 +130,7 @@ You can run tests with:
 
 .. code-block:: sh
 
-    bin/atoum -mcn 1 -d tests/units
+    bin/atoum -d tests/units
 
 Todo
 ----

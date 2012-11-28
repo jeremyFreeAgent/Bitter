@@ -69,7 +69,7 @@ class Bitter extends atoum\test
         $day = new Day('drink_a_bitter_beer', $dateTime);
 
         $this
-            ->variable($bitter->count($day))
+            ->integer($bitter->count($day))
             ->isIdenticalTo(0)
         ;
         $this
@@ -83,7 +83,7 @@ class Bitter extends atoum\test
         ;
 
         $this
-            ->variable($bitter->count($day))
+            ->integer($bitter->count($day))
             ->isIdenticalTo(1)
         ;
         $this
@@ -95,7 +95,7 @@ class Bitter extends atoum\test
         $bitter->mark('drink_a_bitter_beer', 404, $dateTime);
 
         $this
-            ->variable($bitter->count($day))
+            ->integer($bitter->count($day))
             ->isIdenticalTo(1)
         ;
         $this
@@ -300,7 +300,7 @@ class Bitter extends atoum\test
         ;
 
         $this
-            ->variable($bitter->removeTemp())
+            ->object($bitter->removeTemp())
             ->isIdenticalTo($bitter)
         ;
 

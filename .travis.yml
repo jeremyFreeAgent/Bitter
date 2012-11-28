@@ -1,15 +1,20 @@
 language: php
 
 php:
-  - 5.3
-  - 5.4
+    - 5.3
+    - 5.4
 
 services:
-  - redis-server
+    - redis-server
 
 before_script:
-  - wget http://getcomposer.org/composer.phar
-  - php composer.phar install --dev
+    # install phpredis extension.
+    - sh -c "git clone https://github.com/nicolasff/phpredis/ && cd phpredis && phpize && ./configure && make && sudo make install " > /dev/null
+    - echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+    # composer install
+    - wget http://getcomposer.org/composer.phar
+    - php composer.phar install --dev
+
 
 script:
-  - bin/atoum -mcn 1 -d tests/units
+    - bin/atoum -mcn 1 -d tests/units

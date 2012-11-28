@@ -54,8 +54,10 @@ Mark user 123 as active and has played a song:
 
 .. code-block:: php
 
-    $bitter->mark('active', 123);
-    $bitter->mark('song:played', 123);
+    $bitter
+        ->mark('active', 123)
+        ->mark('song:played', 123)
+    ;
 
 **Note**: Please don't use huge ids (e.g. 2^32 or bigger) cause this will require large amounts of memory.
 
@@ -91,7 +93,7 @@ How many users that were active yesterday are also active today:
 
 .. code-block:: php
 
-    $today     = new \FreeAgent\Bitter\Event\Day('active', new \DateTime());
+    $today     = new \FreeAgent\Bitter\Event\Day('active');
     $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     $count = $bitter
@@ -106,7 +108,7 @@ Test if user 123 was active yesterday and is active today:
 
 .. code-block:: php
 
-    $today     = new \FreeAgent\Bitter\Event\Day('active', new \DateTime());
+    $today     = new \FreeAgent\Bitter\Event\Day('active');
     $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
 
     $active = $bitter

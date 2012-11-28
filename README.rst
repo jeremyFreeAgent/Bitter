@@ -100,7 +100,7 @@ How many users that were active yesterday are also active today:
         ->bitOpAnd('bit_op_example', $today, $yesterday)
         ->count('bit_op_example')
     ;
-    echo $count . ' were active yesterday and today.';
+    echo $count . ' users were active yesterday and today.';
 
 **Note**: The ``bit_op_example`` key will expire after 60 seconds.
 
@@ -116,9 +116,9 @@ Test if user 123 was active yesterday and is active today:
         ->in(123, 'bit_op_example')
     ;
     if ($active) {
-        echo 'User 123 was active yesterday and today.';
+        echo 'User with id 123 was active yesterday and today.';
     } else {
-        echo 'User 123 was not active yesterday and today.';
+        echo 'User with id 123 was not active yesterday and today.';
     }
 
 **Note**: Please look at `Redis BITOP Command <http://redis.io/commands/bitop>`_ for performance considerations.

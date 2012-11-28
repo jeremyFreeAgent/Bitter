@@ -10,13 +10,25 @@ use FreeAgent\Bitter\Bitter as TestedBitter;
 use FreeAgent\Bitter\Event\Day;
 
 /**
+ * @engine isolate
  * @author Jérémy Romey <jeremy@free-agent.fr>
  */
 class Bitter extends atoum\test
 {
-    private function getRedisClient()
+    public function dataProviderTestedClients()
     {
-        return new \Predis\Client();
+        $clients = array(
+            new \Predis\Client(),
+        );
+
+        if (class_exists('\Redis')) {
+            $conn = new \Redis();
+            $conn->connect('127.0.0.1');
+
+            $clients[] = $conn;
+        }
+
+        return $clients;
     }
 
     private function getPrefixKey()
@@ -29,25 +41,26 @@ class Bitter extends atoum\test
         return 'test_bitter_temp:';
     }
 
-    private function removeAll()
+    private function removeAll($redisClient)
     {
-        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->getPrefixKey() . '*'), 100);
+        $keys_chunk = array_chunk($redisClient->keys($this->getPrefixKey() . '*'), 100);
 
         foreach ($keys_chunk as $keys) {
-            $this->getRedisClient()->del($keys);
+            $redisClient->del($keys);
         }
 
-        $keys_chunk = array_chunk($this->getRedisClient()->keys($this->getPrefixTempKey() . '*'), 100);
+        $keys_chunk = array_chunk($redisClient->keys($this->getPrefixTempKey() . '*'), 100);
 
         foreach ($keys_chunk as $keys) {
-            $this->getRedisClient()->del($keys);
+            $redisClient->del($keys);
         }
     }
 
-    public function testConstruct()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testConstruct($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
         $this
@@ -56,13 +69,14 @@ class Bitter extends atoum\test
         ;
     }
 
-    public function testMarkEvent()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testMarkEvent($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
 
@@ -103,7 +117,7 @@ class Bitter extends atoum\test
             ->isTrue()
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $day = new Day('drink_a_bitter_beer', new DateTime());
         $this
@@ -116,16 +130,17 @@ class Bitter extends atoum\test
             ->isTrue()
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 
-    public function testbitOpAnd()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testbitOpAnd($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
         $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
@@ -149,16 +164,17 @@ class Bitter extends atoum\test
             ->isFalse()
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 
-    public function testbitOpOr()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testbitOpOr($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $twoDaysAgo = new Day('drink_a_bitter_beer', new DateTime('2 days ago'));
         $yesterday  = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
@@ -188,16 +204,17 @@ class Bitter extends atoum\test
             ->isFalse()
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 
-    public function testbitOpXor()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testbitOpXor($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $yesterday = new Day('drink_a_bitter_beer', new DateTime('yesterday'));
         $today     = new Day('drink_a_bitter_beer', new DateTime('today'));
@@ -221,14 +238,15 @@ class Bitter extends atoum\test
             ->isTrue()
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 
-    public function testRemoveAll()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testRemoveAll($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $this
             ->array($redisClient->keys($this->getPrefixKey() . '*'))
@@ -260,13 +278,14 @@ class Bitter extends atoum\test
         ;
 
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 
-    public function testRemoveTemp()
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
+    public function testRemoveTemp($redisClient)
     {
-        $redisClient = $this->getRedisClient();
-
         $keys_chunk = array_chunk($redisClient->keys($this->getPrefixKey() . '*'), 100);
 
         foreach ($keys_chunk as $keys) {
@@ -315,7 +334,7 @@ class Bitter extends atoum\test
         ;
 
         // Expire timeout
-        $this->removeAll();
+        $this->removeAll($redisClient);
 
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey(), 2);
         $bitter->mark('drink_a_bitter_beer', 13, new DateTime('today'));
@@ -336,6 +355,6 @@ class Bitter extends atoum\test
             ->strictlyContains($this->getPrefixTempKey() . 'keys')
         ;
 
-        $this->removeAll();
+        $this->removeAll($redisClient);
     }
 }

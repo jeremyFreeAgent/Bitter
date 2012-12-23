@@ -244,6 +244,72 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
+    public function testBitDatePeriod($redisClient)
+    {
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $this->removeAll($redisClient);
+
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2011-11-06 15:30:45');
+        $bitter->mark('drink_a_bitter_beer', 1, $dateTime);
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-10-12 15:30:45');
+        $bitter->mark('drink_a_bitter_beer', 2, $dateTime);
+
+        $this
+            ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-10-05 15:30:45'))
+            ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 15:30:45'))
+            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->then()
+            ->object($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->isIdenticalTo($bitter)
+        ;
+
+        $this
+            ->if($prefixKey = $this->getPrefixKey())
+            ->and($prefixTempKey = $this->getPrefixTempKey())
+            ->exception(
+                function() use ($redisClient, $prefixKey, $prefixTempKey) {
+                    $bitter = new TestedBitter($redisClient, $prefixKey, $prefixTempKey);
+                    $from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 15:30:45');
+                    $to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 14:30:45');
+                    $bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to);
+                }
+            )
+            ->hasMessage("DateTime from (2012-12-07 15:30:45) must be anterior to DateTime to (2012-12-07 14:30:45).")
+        ;
+
+        $this
+            ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2010-10-05 20:30:45'))
+            ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 12:30:45'))
+            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->then()
+            ->boolean($bitter->in(1, 'test_create_date_period'))
+            ->isTrue()
+            ->boolean($bitter->in(2, 'test_create_date_period'))
+            ->isTrue()
+            ->integer($bitter->count('test_create_date_period'))
+            ->isEqualTo(2)
+        ;
+
+        $this
+            ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-09-05 20:30:45'))
+            ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 12:30:45'))
+            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->then()
+            ->boolean($bitter->in(1, 'test_create_date_period'))
+            ->isFalse()
+            ->boolean($bitter->in(2, 'test_create_date_period'))
+            ->isTrue()
+            ->integer($bitter->count('test_create_date_period'))
+            ->isEqualTo(1)
+        ;
+
+        $this->removeAll($redisClient);
+    }
+
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
     public function testRemoveAll($redisClient)
     {
         $this->removeAll($redisClient);

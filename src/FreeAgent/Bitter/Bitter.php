@@ -134,7 +134,7 @@ class Bitter
         return $this->bitOp('XOR', $destKey, $keyOne, $keyTwo);
     }
 
-    public function bitDatePeriod($key, $destKey, DateTime $from, DateTime $to)
+    public function bitDateRange($key, $destKey, DateTime $from, DateTime $to)
     {
         if ($from > $to) {
             throw new Exception("DateTime from (" . $from->format('Y-m-d H:i:s') . ") must be anterior to DateTime to (" . $to->format('Y-m-d H:i:s') . ").");

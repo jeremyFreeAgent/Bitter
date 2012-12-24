@@ -244,7 +244,7 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
-    public function testBitDatePeriod($redisClient)
+    public function testBitDateRange($redisClient)
     {
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 
@@ -258,9 +258,9 @@ class Bitter extends atoum\test
         $this
             ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-10-05 15:30:45'))
             ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 15:30:45'))
-            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->and($bitter->bitDateRange('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
             ->then()
-            ->object($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->object($bitter->bitDateRange('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
             ->isIdenticalTo($bitter)
         ;
 
@@ -272,7 +272,7 @@ class Bitter extends atoum\test
                     $bitter = new TestedBitter($redisClient, $prefixKey, $prefixTempKey);
                     $from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 15:30:45');
                     $to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 14:30:45');
-                    $bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to);
+                    $bitter->bitDateRange('drink_a_bitter_beer', 'test_create_date_period', $from, $to);
                 }
             )
             ->hasMessage("DateTime from (2012-12-07 15:30:45) must be anterior to DateTime to (2012-12-07 14:30:45).")
@@ -281,7 +281,7 @@ class Bitter extends atoum\test
         $this
             ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2010-10-05 20:30:45'))
             ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 12:30:45'))
-            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->and($bitter->bitDateRange('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
             ->then()
             ->boolean($bitter->in(1, 'test_create_date_period'))
             ->isTrue()
@@ -294,7 +294,7 @@ class Bitter extends atoum\test
         $this
             ->if($from = DateTime::createFromFormat('Y-m-d H:i:s', '2012-09-05 20:30:45'))
             ->and($to = DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-07 12:30:45'))
-            ->and($bitter->bitDatePeriod('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
+            ->and($bitter->bitDateRange('drink_a_bitter_beer', 'test_create_date_period', $from, $to))
             ->then()
             ->boolean($bitter->in(1, 'test_create_date_period'))
             ->isFalse()

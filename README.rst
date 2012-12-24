@@ -133,7 +133,7 @@ How many users that were active during a given date period:
     $to   = new \DateTime('2012-21-12 13:30:45');
 
     $count = $bitter
-        ->bitDatePeriod('active', 'active_period_example', $from, $to)
+        ->bitDateRange('active', 'active_period_example', $from, $to)
         ->count('active_period_example')
     ;
     echo $count . ' users were active from "2010-14-02 20:15:30" to "2012-21-12 13:30:45".';
@@ -151,7 +151,7 @@ Release notes
 -------------
 1.1.0
 
-* Added date period stats with bitDatePeriod method.
+* Added date period stats with bitDateRange method.
 
 Todo
 ----

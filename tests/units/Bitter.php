@@ -310,6 +310,33 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
+    public function testGetIds($redisClient)
+    {
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $this->removeAll($redisClient);
+
+        $eventKey = 'liloo_multipass';
+        $dateTime = new DateTime('2012-10-12 15:30:45');
+        $event    = new Day($eventKey, $dateTime);
+        $ids      = array(1, 13, 404, 2, 12700042, 13003, 99);
+
+        foreach ($ids as $id) {
+           $bitter->mark($eventKey, $id, $dateTime);
+        }
+        sort($ids);
+
+        $this
+            ->array($bitter->getIds($event))
+            ->isIdenticalTo($ids)
+        ;
+
+        $this->removeAll($redisClient);
+    }
+
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
     public function testRemoveAll($redisClient)
     {
         $this->removeAll($redisClient);

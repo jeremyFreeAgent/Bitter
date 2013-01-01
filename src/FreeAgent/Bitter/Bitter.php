@@ -43,7 +43,7 @@ class Bitter
     /**
      * Set the Redis client
      *
-     * @param [type] $newredisClient The Redis client
+     * @param object $newredisClient The Redis client
      */
     public function setRedisClient($redisClient)
     {
@@ -188,6 +188,36 @@ class Bitter
         $this->getRedisClient()->expire($destKey, $this->expireTimeout);
 
         return $this;
+    }
+
+    /**
+     * Returns the ids of an key or event
+     *
+     * @param  mixed   $key The key or the event
+     * @return array   The ids array
+     */
+    public function getIds($key)
+    {
+        $key = $key instanceof EventInterface ? $this->prefixKey . $key->getKey() : $this->prefixTempKey . $key;
+
+        $string = $this->getRedisClient()->get($key);
+
+        $data = $this->bitsetToString($string);
+
+        $ids = array();
+        while (false !== ($pos = strpos($data, '1'))) {
+            $data[$pos] = 0;
+            $ids[]  = (int)($pos/8)*8 + abs(7-($pos%8));
+        }
+
+        sort($ids);
+
+        return $ids;
+    }
+
+    protected function bitsetToString($bitset = '')
+    {
+        return bitset_to_string($string);
     }
 
     /**

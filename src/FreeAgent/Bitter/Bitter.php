@@ -217,7 +217,7 @@ class Bitter
 
     protected function bitsetToString($bitset = '')
     {
-        return bitset_to_string($string);
+        return bitset_to_string($bitset);
     }
 
     /**

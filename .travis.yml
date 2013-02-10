@@ -11,10 +11,11 @@ before_script:
     # install phpredis extension.
     - sh -c "git clone https://github.com/nicolasff/phpredis/ && cd phpredis && phpize && ./configure && make && sudo make install " > /dev/null
     - echo "extension=redis.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+    - pecl install bitset
     # composer install
     - wget http://getcomposer.org/composer.phar
     - php composer.phar install --dev
 
 
 script:
-    - bin/atoum -mcn 1 -d tests/units
+    - bin/atoum -d tests/units

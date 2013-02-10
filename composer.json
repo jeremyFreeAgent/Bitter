@@ -15,7 +15,8 @@
         "issues": "https://github.com/jeremyFreeAgent/Bitter/issues"
     },
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "ext-bitset": "1.0.1"
     },
     "require-dev": {
         "predis/predis": "0.8.*",

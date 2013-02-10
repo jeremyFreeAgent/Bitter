@@ -43,6 +43,8 @@ Bitter uses `Redis <http://redis.io>`_  with version **>=2.6**.
 
 **Note**: Every key created in Redis will be prefixed by ``bitter:``, temp keys by ``bitter_temp:``.
 
+Bitter uses `Bitset PECL extension <http://pecl.php.net/package/Bitset>`_  with version **=1.0.1** for the ``getIds`` method.
+
 Basic usage
 -----------
 Create a Bitter with a Redis client (Predis as example):

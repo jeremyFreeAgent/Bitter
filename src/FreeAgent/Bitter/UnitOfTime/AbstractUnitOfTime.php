@@ -1,6 +1,6 @@
 <?php
 
-namespace FreeAgent\Bitter\Event;
+namespace FreeAgent\Bitter\UnitOfTime;
 
 use \DateTime;
 use \Exception;
@@ -8,7 +8,7 @@ use \Exception;
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>
  */
-abstract class AbstractEvent
+abstract class AbstractUnitOfTime
 {
     protected $eventName;
     protected $dateTime;
@@ -19,7 +19,7 @@ abstract class AbstractEvent
         $this->dateTime  = is_null($dateTime) ? new DateTime : $dateTime;
     }
 
-    public function getEventName()
+    public function getUnitOfTimeName()
     {
         return $this->eventName;
     }
@@ -33,6 +33,6 @@ abstract class AbstractEvent
 
     public function getKey()
     {
-        return sprintf('%s:%s', $this->getEventName(), $this->getDateTimeFormated());
+        return sprintf('%s:%s', $this->getUnitOfTimeName(), $this->getDateTimeFormated());
     }
 }

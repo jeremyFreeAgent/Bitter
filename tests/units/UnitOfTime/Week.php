@@ -1,12 +1,12 @@
 <?php
 
-namespace FreeAgent\Bitter\tests\units\Event;
+namespace FreeAgent\Bitter\tests\units\UnitOfTime;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use \mageekguy\atoum;
 use \DateTime;
-use FreeAgent\Bitter\Event\Week as TestedWeek;
+use FreeAgent\Bitter\UnitOfTime\Week as TestedWeek;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>
@@ -19,8 +19,8 @@ class Week extends atoum\test
 
         $this
             ->object($week)
-            ->isInstanceOf('FreeAgent\Bitter\Event\AbstractEvent')
-            ->isInstanceOf('FreeAgent\Bitter\Event\EventInterface')
+            ->isInstanceOf('FreeAgent\Bitter\UnitOfTime\AbstractUnitOfTime')
+            ->isInstanceOf('FreeAgent\Bitter\UnitOfTime\UnitOfTimeInterface')
         ;
     }
 

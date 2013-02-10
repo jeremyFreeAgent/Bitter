@@ -1,11 +1,11 @@
 <?php
 
-namespace FreeAgent\Bitter\Event;
+namespace FreeAgent\Bitter\UnitOfTime;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>
  */
-class Week extends AbstractEvent implements EventInterface
+class Week extends AbstractUnitOfTime implements UnitOfTimeInterface
 {
     public function getDateTimeFormated()
     {

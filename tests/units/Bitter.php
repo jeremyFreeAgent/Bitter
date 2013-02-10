@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 use \mageekguy\atoum;
 use \DateTime;
 use FreeAgent\Bitter\Bitter as TestedBitter;
-use FreeAgent\Bitter\Event\Day;
+use FreeAgent\Bitter\UnitOfTime\Day;
 
 /**
  * @engine isolate
@@ -72,7 +72,7 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
-    public function testMarkEvent($redisClient)
+    public function testMarkUnitOfTime($redisClient)
     {
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
 

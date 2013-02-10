@@ -4,6 +4,8 @@ Bitter Documentation
 .. image:: https://secure.travis-ci.org/jeremyFreeAgent/Bitter.png?branch=master
    :target: http://travis-ci.org/jeremyFreeAgent/Bitter
 
+**1.2.0 WORK IN PROGRESS**
+
 Bitter is a simple but powerful analytics library
 
     "Use Bitter and you have time to drink a bitter beer !"
@@ -71,7 +73,7 @@ Test if user 123 has played a song this week:
 
 .. code-block:: php
 
-    $currentWeek = new FreeAgent\Bitter\Event\Week('song:played');
+    $currentWeek = new FreeAgent\Bitter\UnitOfTime\Week('song:played');
 
     if ($bitter->in(123, $currentWeek) {
         echo 'User with id 123 has played a song this week.';
@@ -83,7 +85,7 @@ How many users were active yesterday:
 
 .. code-block:: php
 
-    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $yesterday = new \FreeAgent\Bitter\UnitOfTime\Day('active', new \DateTime('yesterday'));
 
     echo $bitter->count($yesterday) . ' users were active yesterday.';
 
@@ -93,8 +95,8 @@ How many users that were active yesterday are also active today:
 
 .. code-block:: php
 
-    $today     = new \FreeAgent\Bitter\Event\Day('active');
-    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $today     = new \FreeAgent\Bitter\UnitOfTime\Day('active');
+    $yesterday = new \FreeAgent\Bitter\UnitOfTime\Day('active', new \DateTime('yesterday'));
 
     $count = $bitter
         ->bitOpAnd('bit_op_example', $today, $yesterday)
@@ -108,8 +110,8 @@ Test if user 123 was active yesterday and is active today:
 
 .. code-block:: php
 
-    $today     = new \FreeAgent\Bitter\Event\Day('active');
-    $yesterday = new \FreeAgent\Bitter\Event\Day('active', new \DateTime('yesterday'));
+    $today     = new \FreeAgent\Bitter\UnitOfTime\Day('active');
+    $yesterday = new \FreeAgent\Bitter\UnitOfTime\Day('active', new \DateTime('yesterday'));
 
     $active = $bitter
         ->bitOpAnd('bit_op_example', $today, $yesterday)
@@ -138,6 +140,23 @@ How many users that were active during a given date period:
     ;
     echo $count . ' users were active from "2010-14-02 20:15:30" to "2012-21-12 13:30:45".';
 
+Get Ids for a given key
+-----------------------
+Get Ids for a given date period:
+
+.. code-block:: php
+
+    $from = new \DateTime('2010-14-02 20:15:30');
+    $to   = new \DateTime('2012-21-12 13:30:45');
+
+    $ids = $bitter
+        ->bitDateRange('active', 'active_period_example', $from, $to)
+        ->getIds('active_period_example')
+    ;
+    echo 'Ids of users that were active from "2010-14-02 20:15:30" to "2012-21-12 13:30:45":';
+    echo '<br />';
+    echo implode(', ', $ids);
+
 Unit Tests
 ----------
 
@@ -149,6 +168,12 @@ You can run tests with:
 
 Release notes
 -------------
+1.2.0
+
+* Added a remove method to remove a specific temp key.
+* Added a removeEvent method to remove all data of an event.
+* Renamed Event to UnitOfTime in order to be more explicit.
+
 1.1.0
 
 * Added date period stats with bitDateRange method.

@@ -3,7 +3,6 @@
 namespace FreeAgent\Bitter\UnitOfTime;
 
 use \DateTime;
-use \Exception;
 
 /**
  * @author Jérémy Romey <jeremy@free-agent.fr>

@@ -310,6 +310,52 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
+    public function testThatBitterMarkIncrementAndGetValue($redisClient)
+    {
+        $this->removeAll($redisClient);
+
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $dateTime = new \DateTime();
+
+        $dayActive = new Day('active', $dateTime);
+        $dayBlocked = new Day('blocked', $dateTime);
+
+        $this
+            ->if($dateTime = new \DateTime())
+            ->and($dayActive = new Day('active', $dateTime))
+            ->and($dayBlocked = new Day('blocked', $dateTime))
+            ->and($bitter->mark('active', 1))
+            ->and($bitter->mark('active', 2))
+                ->integer($bitter->count($dayActive))
+                    ->isEqualTo(2)
+            ->if($from = new \DateTime('-1 day'))
+            ->and($to = new \DateTime('+1 day'))
+            ->and($bitter->mark('active', 3))
+            ->and($bitter->mark('blocked', 4))
+            ->and($bitter->mark('blocked', 5))
+            ->and($bitter->mark('blocked', 6))
+            ->and($bitter->mark('blocked', 7))
+                ->integer($bitter->count($dayActive))
+                    ->isEqualTo(3)
+                ->integer($bitter->count($dayBlocked))
+                    ->isEqualTo(4)
+                ->integer($bitter->count($dayBlocked) + $bitter->count($dayActive))
+                    ->isEqualTo(7)
+            ->if($bitter->bitDateRange('active', 'active_users_period', $from, $to))
+                ->integer($bitter->count('active_users_period'))
+                    ->isEqualTo(3)
+            ->if($bitter->bitDateRange('blocked', 'blocked_users_period', $from, $to))
+                ->integer($bitter->count('blocked_users_period'))
+                    ->isEqualTo(4)
+        ;
+
+        $this->removeAll($redisClient);
+    }
+
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
     public function testRemoveAll($redisClient)
     {
         $this->removeAll($redisClient);

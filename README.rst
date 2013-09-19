@@ -149,6 +149,10 @@ You can run tests with:
 
 Release notes
 -------------
+1.1.1
+
+* Fixed bitDateRange.
+
 1.1.0
 
 * Added date period stats with bitDateRange method.

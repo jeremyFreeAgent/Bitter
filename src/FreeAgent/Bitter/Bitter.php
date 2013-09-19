@@ -140,6 +140,9 @@ class Bitter
             throw new Exception("DateTime from (" . $from->format('Y-m-d H:i:s') . ") must be anterior to DateTime to (" . $to->format('Y-m-d H:i:s') . ").");
         }
 
+        $from = clone $from;
+        $to = clone $to;
+
         $this->getRedisClient()->del($this->prefixTempKey . $destKey);
 
         // Hours

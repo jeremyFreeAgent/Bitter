@@ -62,6 +62,14 @@ Mark user 123 as active and has played a song:
         ->mark('active', 123)
         ->mark('song:played', 123)
     ;
+    
+Or...
+
+.. code-block:: php
+
+    $bitter
+        ->mark(['active', 'song:played'], 123)
+    ;
 
 **Note**: Please don't use huge ids (e.g. 2^32 or bigger) cause this will require large amounts of memory.
 

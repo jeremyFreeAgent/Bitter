@@ -55,27 +55,34 @@ class Bitter
     /**
      * Marks an event for hours, days, weeks and months
      *
-     * @param string   $eventName The name of the event, could be "active" or "new_signups"
+     * @param string|array   $eventName The name of the event, could be "active" or "new_signups"
      * @param integer  $id        An unique id, typically user id. The id should not be huge, read Redis documentation why (bitmaps)
      * @param DateTime $dateTime  Which date should be used as a reference point, default is now
      */
-    public function mark($eventName, $id, DateTime $dateTime = null)
+    public function mark($eventNames, $id, DateTime $dateTime = null)
     {
+        $eventNames = is_array($eventNames) ? $eventNames : array($eventNames);
         $dateTime = is_null($dateTime) ? new DateTime : $dateTime;
 
-        $eventData = array(
-            new Year($eventName, $dateTime),
-            new Month($eventName, $dateTime),
-            new Week($eventName, $dateTime),
-            new Day($eventName, $dateTime),
-            new Hour($eventName, $dateTime),
-        );
+        $pipe = $this->getRedisClient()->pipeline();
 
-        foreach ($eventData as $event) {
-            $key = $this->prefixKey . $event->getKey();
-            $this->getRedisClient()->setbit($key, $id, 1);
-            $this->getRedisClient()->sadd($this->prefixKey . 'keys', $key);
+        foreach ($eventNames as $key => $eventName) {
+            $eventData = array(
+                new Year($eventName, $dateTime),
+                new Month($eventName, $dateTime),
+                new Week($eventName, $dateTime),
+                new Day($eventName, $dateTime),
+                new Hour($eventName, $dateTime),
+            );
+
+            foreach ($eventData as $event) {
+                $key = $this->prefixKey . $event->getKey();
+                $pipe->setbit($key, $id, 1);
+                $pipe->sadd($this->prefixKey . 'keys', $key);
+            }
         }
+
+        $pipe->execute();
 
         return $this;
     }

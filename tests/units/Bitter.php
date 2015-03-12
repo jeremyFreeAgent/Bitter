@@ -144,11 +144,11 @@ class Bitter extends atoum\test
 
         $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
 
-        $events = [
+        $events = array(
             'drink_a_bitter_beer',
             'drink_another_bitter_beer',
             'pass_out',
-        ];
+        );
 
         foreach ($events as $event) {
             $day = new Day($event, $dateTime);

@@ -61,33 +61,28 @@ class Bitter
      */
     public function mark($eventNames, $id, DateTime $dateTime = null)
     {
-        $eventNames = is_array($eventNames) ? $eventNames : [$eventNames];
+        $eventNames = is_array($eventNames) ? $eventNames : array($eventNames);
         $dateTime = is_null($dateTime) ? new DateTime : $dateTime;
-        $prefix = $this->prefixKey;
 
-        $this->getRedisClient()
-            ->pipeline(function($pipe) use (
-                $eventNames,
-                $prefix,
-                $dateTime,
-                $id) {
+        $pipe = $this->getRedisClient()->pipeline();
 
-            foreach ($eventNames as $key => $eventName) {
-                $eventData = array(
-                    new Year($eventName, $dateTime),
-                    new Month($eventName, $dateTime),
-                    new Week($eventName, $dateTime),
-                    new Day($eventName, $dateTime),
-                    new Hour($eventName, $dateTime),
-                );
+        foreach ($eventNames as $key => $eventName) {
+            $eventData = array(
+                new Year($eventName, $dateTime),
+                new Month($eventName, $dateTime),
+                new Week($eventName, $dateTime),
+                new Day($eventName, $dateTime),
+                new Hour($eventName, $dateTime),
+            );
 
-                foreach ($eventData as $event) {
-                    $key = $prefix . $event->getKey();
-                    $pipe->setbit($key, $id, 1);
-                    $pipe->sadd($prefix . 'keys', $key);
-                }
+            foreach ($eventData as $event) {
+                $key = $this->prefixKey . $event->getKey();
+                $pipe->setbit($key, $id, 1);
+                $pipe->sadd($this->prefixKey . 'keys', $key);
             }
-        });
+        }
+
+        $pipe->execute();
 
         return $this;
     }

@@ -63,6 +63,8 @@ Mark user 123 as active and has played a song:
         ->mark('song:played', 123)
     ;
     
+Or...
+
 .. code-block:: php
 
     $bitter

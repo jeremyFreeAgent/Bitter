@@ -136,6 +136,90 @@ class Bitter extends atoum\test
     /**
      * @dataProvider dataProviderTestedClients
      */
+    public function testMultipleMarks($redisClient)
+    {
+        $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
+
+        $this->removeAll($redisClient);
+
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', '2012-11-06 15:30:45');
+
+        $events = [
+            'drink_a_bitter_beer',
+            'drink_another_bitter_beer',
+            'pass_out',
+        ];
+
+        foreach ($events as $event) {
+            $day = new Day($event, $dateTime);
+
+            $this
+                ->integer($bitter->count($day))
+                ->isIdenticalTo(0)
+            ;
+            $this
+                ->boolean($bitter->in(404, $day))
+                ->isFalse()
+            ;
+        }
+
+
+        $this
+            ->object($bitter->mark($events, 404, $dateTime))
+            ->isIdenticalTo($bitter)
+        ;
+
+        foreach ($events as $event) {
+            $day = new Day($event, $dateTime);
+
+            $this
+                ->integer($bitter->count($day))
+                ->isIdenticalTo(1)
+            ;
+            $this
+                ->boolean($bitter->in(404, $day))
+                ->isTrue()
+            ;
+        }
+
+
+        // Adding it a second time with the same dateTime !
+        $this
+            ->object($bitter->mark($events, 404, $dateTime))
+            ->isIdenticalTo($bitter)
+        ;
+
+        foreach ($events as $event) {
+            $day = new Day($event, $dateTime);
+            $this
+                ->integer($bitter->count($day))
+                ->isIdenticalTo(1)
+            ;
+            $this
+                ->boolean($bitter->in(404, $day))
+                ->isTrue()
+            ;
+        }
+
+        $this->removeAll($redisClient);
+
+        $day = new Day('drink_a_bitter_beer', new DateTime());
+        $this
+            ->boolean($bitter->in(13, $day))
+            ->isFalse()
+        ;
+        $bitter->mark('drink_a_bitter_beer', 13);
+        $this
+            ->boolean($bitter->in(13, $day))
+            ->isTrue()
+        ;
+
+        $this->removeAll($redisClient);
+    }
+
+    /**
+     * @dataProvider dataProviderTestedClients
+     */
     public function testbitOpAnd($redisClient)
     {
         $bitter = new TestedBitter($redisClient, $this->getPrefixKey(), $this->getPrefixTempKey());
